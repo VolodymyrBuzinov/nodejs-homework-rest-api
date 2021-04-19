@@ -1,40 +1,38 @@
 const { ContactRepository } = require('../repository/repository')
-const db = require('../db/db')
+
 class ContactService {
   constructor() {
-    process.nextTick(async () => {
-      const client = await db
-      this.repository = new ContactRepository(client)
-    } )
+    this.repository = new ContactRepository()
+    
     
   }
 
-  async listContacts() {
-    const data = await this.repository.listContacts()
+  async listContacts(query, ownerID) {
+    const data = await this.repository.listContacts(query, ownerID)
     return data
   }
 
-  async getById({ contactId }) {
-    const data = await this.repository.getById(contactId)
+  async getById({ contactId }, ownerID) {
+    const data = await this.repository.getById(contactId, ownerID)
     return data
   }
 
-  async addContact({ name, email, phone }) {
-    const data = await this.repository.addContact(name, email, phone)
+  async addContact({ name, email, phone }, userID) {
+    const data = await this.repository.addContact(name, email, phone, userID)
     return data
   }
 
-  async removeContact({ contactId }) {
-    const data = await this.repository.removeContact(contactId)
+  async removeContact({ contactId }, ownerID) {
+    const data = await this.repository.removeContact(contactId, ownerID)
     return data
   }
 
-  async updateContact({ contactId }, body) {
-    const data = await this.repository.updateContact(contactId, body)
+  async updateContact({ contactId }, body, ownerID) {
+    const data = await this.repository.updateContact(contactId, body, ownerID)
     return data
   }
-  async updateStatusContact({ contactId }, body) {
-    const data = await this.repository.updateStatusContact(contactId, body)
+  async updateStatusContact({ contactId }, body, ownerID) {
+    const data = await this.repository.updateStatusContact(contactId, body, ownerID)
     return data
   }
 }
