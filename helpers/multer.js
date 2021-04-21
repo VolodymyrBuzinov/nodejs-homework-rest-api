@@ -1,6 +1,5 @@
 const path = require('path');
 const multer = require('multer');
-
 const UPLOAD_DIR = path.join(process.cwd(), 'tmp');
 
 const storage = multer.diskStorage({
