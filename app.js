@@ -5,13 +5,17 @@ const { codes } = require('./helpers/constants')
 const contactsRouter = require('./routes/api/contacts')
 const userRouter = require('./routes/api/user')
 const app = express()
-
+const path = require('path')
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
+
+
+
+app.use(express.static(path.join(__dirname, 'public')))
+
 
 app.use(logger(formatsLogger))
 app.use(cors())
 app.use(express.json())
-
 app.use('/api/contacts', contactsRouter)
 app.use('/api/users', userRouter)
 
