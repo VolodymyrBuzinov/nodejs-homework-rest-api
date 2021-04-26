@@ -29,6 +29,13 @@ class UserRepository {
     const data = await this.model.findByIdAndUpdate(userID, {...avatarPath},{new: true})
     return data
   }
+  async verification({verifyToken}) {
+    if(!verifyToken) {
+     return false
+    }
+    const record = await this.model.updateOne({verify: true, verifyToken: null})
+    return record
+  }
 }
 
 module.exports = { UserRepository }

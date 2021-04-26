@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose
 const {subscription} = require('../helpers/constants')
 const bcrypt = require('bcryptjs')
-
+const gravatar = require('gravatar');
 const userSchema = new Schema({
     password: {
       type: String,
@@ -35,6 +35,14 @@ const userSchema = new Schema({
       default: function () {
         return gravatar.url(this.email, { s: '250' }, true);
       },
+    },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verifyToken: {
+      type: String,
+      required: [true, 'Verify token is required'],
     },
   },
   {versionKey: false, timestamps: true}  

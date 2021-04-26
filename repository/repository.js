@@ -59,6 +59,7 @@ class ContactRepository {
     const record = await this.model.findByIdAndUpdate({_id: contactId, owner: ownerID},{...body},{new: true}) 
     return record
   }
+  
 }
 
 module.exports = { ContactRepository }
