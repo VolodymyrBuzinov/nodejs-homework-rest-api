@@ -11,7 +11,8 @@ class AuthService {
 
   async login(email, password) {
     const user = await this.repository.getByEmail(email)  
-    if (!user || !user.validPassword(password)  ) {
+     
+    if (!user || !user.validPassword(password) || !user.verify ) {
      return null
     }
     const id = user.id
@@ -31,7 +32,7 @@ class AuthService {
    
   async current(email) {
     const data = await this.repository.getByEmail(email)
-    return { email: data.email, subscription: data.subscription };
+    return { email: data.email, subscription: data.subscription, verify: data.verify, verifyToken: data.verifyToken };
   }
 }
 
