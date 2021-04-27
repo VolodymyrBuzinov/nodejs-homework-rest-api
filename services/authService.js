@@ -1,6 +1,5 @@
 const { UserRepository } = require('../repository/userRepository')
 const jwt = require('jsonwebtoken')
-const { isError } = require('joi')
 require('dotenv').config()
 const SECRET_KEY = process.env.JWT_KEY
 class AuthService {

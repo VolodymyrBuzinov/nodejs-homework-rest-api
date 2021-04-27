@@ -6,6 +6,7 @@ const upload = require('../../helpers/multer')
 
 router.get('/current', guard, userController.current)
 router.get('/verify/:verificationToken', userController.verification)
+router.post('/verify', userController.sendNewMail)
 router.post('/signup', userController.reg)
 router.post('/login', userController.login)
 router.post('/logout', guard, userController.logout)

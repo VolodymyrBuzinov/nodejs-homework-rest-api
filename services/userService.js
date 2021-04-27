@@ -13,13 +13,12 @@ class UserService {
   constructor() {
        this.repository = new UserRepository  
        this.path = 'http://localhost:3000'
-  }
-
-  #SGMAIL = sgMail
-  #MAILGEN = Mailgen
-  #CREATE_TEMPLATE (verifyToken, name) {
-    console.log(verifyToken);
-    const mailGenerator = new this.#MAILGEN({
+       this.sgMail = sgMail
+       this.mailgen = Mailgen
+  }  
+  
+  #CREATE_TEMPLATE (verifyToken, name = 'User') {   
+    const mailGenerator = new this.mailgen({
       theme: 'default',
       product: {          
           name: 'Contacts System',
@@ -60,14 +59,14 @@ class UserService {
   }
    async sendEmail(verifyToken, email, name) {
      const emailBody = this.#CREATE_TEMPLATE(verifyToken, name)
-    this.#SGMAIL.setApiKey(process.env.SENDGRID_API_KEY)
+    this.sgMail.setApiKey(process.env.SENDGRID_API_KEY)
     const msg = {
       to: email, 
       from: 'vova.buzz@gmail.com', 
       subject: 'Sending with SendGrid is Fun',     
       html: emailBody,
     }
-    await this.#SGMAIL
+    await this.sgMail
       .send(msg)      
    }
   async getById(contactId) {
@@ -75,7 +74,7 @@ class UserService {
     return data
   }
   async getByEmail(email) {
-    const data = await this.repository.getByEmail(email)
+    const data = await this.repository.getByEmail(email)    
     return data
   }
   async updateSubscription(userID, body) {
@@ -110,6 +109,17 @@ class UserService {
   async verification({verificationToken}) {
    const user = await this.repository.verification({verifyToken: verificationToken})
    return user;
+  }
+  async sendNewMail({email}) {
+    try {
+      const data = await this.repository.sendNewMaiL(email)      
+      if (!data.verify) {
+        this.sendEmail(data.verifyToken, email)
+        return data
+      }  
+    } catch (error) {
+      throw new Error(400, error.message, "Verification has already been passed")
+    }    
   }
 }
 
